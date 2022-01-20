@@ -5,6 +5,10 @@
     "email": "hello.yudinkov@gmail.com",
     "url": "https://github.com/eyudinkov"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:eyudinkov/editor-creator.git"
+  },
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
