@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git@github.com:eyudinkov/editor-creator.git"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "lib/index.js",
   "unpkg": "dist/index.js",
