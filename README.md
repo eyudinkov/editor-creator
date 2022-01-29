@@ -15,6 +15,7 @@ $ npm install editor-creator --save
 ### Flow
 
 ```jsx
+import React from 'react';
 import Editor, { Flow } from 'editor-creator';
 
 const data = {
@@ -41,7 +42,13 @@ const data = {
   ],
 };
 
-<Editor>
-  <Flow data={data} />
-</Editor>;
+const Flow = () => {
+  return (
+    <Editor>
+      <Flow data={data} />
+    </Editor>
+  );
+}
+
+export default Flow;
 ```
