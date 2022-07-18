@@ -32,9 +32,7 @@ import { INode, IEdge, ICombo } from '@antv/g6/lib/interface/item';
 export interface GShape extends IGShape {}
 export interface GGroup extends IGGroup {}
 
-export interface Graph extends IGraph {
-  refreshLayout: any;
-}
+export interface Graph extends IGraph {}
 export interface TreeGraph extends ITreeGraph {}
 
 export interface AnchorPoint extends IPoint {

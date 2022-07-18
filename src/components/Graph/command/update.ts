@@ -34,7 +34,7 @@ const updateCommand: BaseCommand<UpdateCommandParams, Graph & TreeGraph> = {
     this.params.originModel = originModel;
   },
 
-  execute(graph: Graph) {
+  execute(graph) {
     const { id, updateModel, forceRefreshLayout } = this.params;
 
     graph.updateItem(id, updateModel);
