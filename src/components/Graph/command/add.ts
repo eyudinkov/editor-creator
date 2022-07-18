@@ -1,6 +1,6 @@
 import { guid } from '@/utils';
 import { ItemType, GraphCustomEvent, GraphMode } from '@/common/constants';
-import { NodeModel, EdgeModel } from '@/common/interfaces';
+import { NodeModel, EdgeModel, Graph } from '@/common/interfaces';
 import { BaseCommand, baseCommand } from '@/components/Graph/command/base';
 
 export interface AddCommandParams {
@@ -18,7 +18,7 @@ const addCommand: BaseCommand<AddCommandParams> = {
     },
   },
 
-  canExecute(graph) {
+  canExecute(graph: Graph) {
     return graph.getCurrentMode() !== GraphMode.Readonly;
   },
 
@@ -32,7 +32,7 @@ const addCommand: BaseCommand<AddCommandParams> = {
     model.id = guid();
   },
 
-  execute(graph) {
+  execute(graph: Graph) {
     const { type, model } = this.params;
 
     graph.add(type, model);
@@ -44,7 +44,7 @@ const addCommand: BaseCommand<AddCommandParams> = {
     graph.emit(GraphCustomEvent.onShowActionMenu, { item });
   },
 
-  undo(graph) {
+  undo(graph: Graph) {
     const { model } = this.params;
 
     graph.remove(model.id);

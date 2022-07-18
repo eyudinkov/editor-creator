@@ -1,6 +1,7 @@
 import { GraphCustomEvent, GraphMode } from '@/common/constants';
 import { executeBatch } from '@/utils';
 import { BaseCommand, baseCommand } from '@/components/Graph/command/base';
+import { Graph } from '@/common/interfaces';
 
 export interface HideEdgesParams {
   edges: string[];
@@ -13,14 +14,14 @@ const hideEdges: BaseCommand<HideEdgesParams> = {
     edges: [],
   },
 
-  canExecute(graph) {
+  canExecute(graph: Graph) {
     const edges = graph.getEdges();
     const hasVisibleEdges = edges.some(edge => edge.isVisible());
 
     return graph.getCurrentMode() !== GraphMode.Readonly && hasVisibleEdges;
   },
 
-  init(graph) {
+  init(graph: Graph) {
     const { edges } = this.params;
 
     if (!edges.length) {
@@ -33,7 +34,7 @@ const hideEdges: BaseCommand<HideEdgesParams> = {
     }
   },
 
-  execute(graph) {
+  execute(graph: Graph) {
     const { edges } = this.params;
 
     executeBatch(graph, () => {
@@ -45,7 +46,7 @@ const hideEdges: BaseCommand<HideEdgesParams> = {
     graph.emit(GraphCustomEvent.onAfterVisibilityChangeAllEdges, null);
   },
 
-  undo(graph) {
+  undo(graph: Graph) {
     const { edges } = this.params;
 
     executeBatch(graph, () => {

@@ -9,6 +9,7 @@ import { Graph, GraphOptions, FlowData, GraphEvent, GraphReactEventProps } from 
 import behaviorManager from '@/common/behaviorManager';
 import GraphComponent from '@/components/Graph';
 import { EditorError } from '@/common/editorError';
+import { Modes } from '@antv/g6/lib/types';
 
 import './behavior';
 
@@ -18,7 +19,6 @@ interface FlowProps extends Partial<GraphReactEventProps> {
   data: FlowData;
   graphConfig?: Partial<GraphOptions>;
   customBehaviors?: object;
-
   customModes?: (mode: string, behaviors: any) => object;
 }
 
@@ -53,14 +53,14 @@ class Flow extends React.Component<FlowProps, FlowState> {
   };
 
   parseData = data => {
-    const { nodes, edges, ...anyData } = data;
+    const { nodes, edges, ...props } = data;
 
     const mapItem = items => {
       return items.map(item => item);
     };
 
     return {
-      ...anyData,
+      ...props,
       nodes: mapItem(nodes),
       edges: mapItem(edges),
     };
@@ -72,7 +72,7 @@ class Flow extends React.Component<FlowProps, FlowState> {
 
     behaviorManager.registeBehaviors(customBehaviors);
 
-    const modes: any = merge(behaviorManager.getRegisteredBehaviors(GraphType.Flow), {
+    const modes = merge(behaviorManager.getRegisteredBehaviors(GraphType.Flow), {
       default: {
         'drag-node-custom': {
           type: 'drag-node-custom',
@@ -116,7 +116,6 @@ class Flow extends React.Component<FlowProps, FlowState> {
 
     Object.keys(modes).forEach(mode => {
       const behaviors = modes[mode];
-
       modes[mode] = Object.values(customModes ? customModes(mode, behaviors) : behaviors);
     });
 
@@ -126,7 +125,7 @@ class Flow extends React.Component<FlowProps, FlowState> {
           container: containerId,
           width,
           height,
-          modes,
+          modes: (modes as unknown) as Modes,
           defaultNode: {
             shape: 'flowNode',
           },

@@ -20,12 +20,12 @@ const updateCommand: BaseCommand<UpdateCommandParams, Graph & TreeGraph> = {
     forceRefreshLayout: false,
   },
 
-  canExecute(graph) {
+  canExecute(graph: Graph) {
     const item = graph.findById(this.params.id);
     return graph.getCurrentMode() !== GraphMode.Readonly && item != null;
   },
 
-  init(graph) {
+  init(graph: Graph) {
     const { id, updateModel } = this.params;
 
     const updatePaths = Object.keys(updateModel);
@@ -34,7 +34,7 @@ const updateCommand: BaseCommand<UpdateCommandParams, Graph & TreeGraph> = {
     this.params.originModel = originModel;
   },
 
-  execute(graph) {
+  execute(graph: Graph) {
     const { id, updateModel, forceRefreshLayout } = this.params;
 
     graph.updateItem(id, updateModel);
@@ -44,7 +44,7 @@ const updateCommand: BaseCommand<UpdateCommandParams, Graph & TreeGraph> = {
     }
   },
 
-  undo(graph) {
+  undo(graph: Graph) {
     const { id, originModel } = this.params;
 
     graph.updateItem(id, originModel);

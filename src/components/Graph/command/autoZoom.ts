@@ -1,10 +1,11 @@
 import { BaseCommand, baseCommand } from '@/components/Graph/command/base';
 import { GraphCustomEvent } from '@/common/constants';
+import { Graph } from '@/common/interfaces';
 
 const autoZoomCommand: BaseCommand = {
   ...baseCommand,
 
-  canExecute(graph) {
+  canExecute(graph: Graph) {
     const edges = graph.getEdges();
     const nodes = graph.getNodes();
 
@@ -15,7 +16,7 @@ const autoZoomCommand: BaseCommand = {
     return false;
   },
 
-  execute(graph) {
+  execute(graph: Graph) {
     graph.emit(GraphCustomEvent.onHidePortalTriger, null);
 
     graph.fitView(5);

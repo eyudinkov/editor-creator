@@ -1,6 +1,7 @@
 import { executeBatch, toFront, toBack } from '@/utils';
 import { BaseCommand, baseCommand } from '@/components/Graph/command/base';
 import { GraphMode } from '@/common/constants';
+import { Graph } from '@/common/interfaces';
 
 export interface ToBackCommandParams {
   items: string[];
@@ -13,14 +14,14 @@ const toBackCommand: BaseCommand<ToBackCommandParams> = {
     items: [],
   },
 
-  canExecute(graph) {
+  canExecute(graph: Graph) {
     const selectedNodes = this.getSelectedNodes(graph);
     const selectedEdges = this.getSelectedEdges(graph);
 
     return graph.getCurrentMode() !== GraphMode.Readonly && !!(selectedNodes.length || selectedEdges.length);
   },
 
-  init(graph) {
+  init(graph: Graph) {
     const { items } = this.params;
     const selectedNodes = this.getSelectedNodes(graph);
     const selectedEdges = this.getSelectedEdges(graph);
@@ -31,7 +32,7 @@ const toBackCommand: BaseCommand<ToBackCommandParams> = {
     });
   },
 
-  execute(graph) {
+  execute(graph: Graph) {
     const { items } = this.params;
 
     executeBatch(graph, () => {
@@ -45,7 +46,7 @@ const toBackCommand: BaseCommand<ToBackCommandParams> = {
     });
   },
 
-  undo(graph) {
+  undo(graph: Graph) {
     const { items } = this.params;
 
     executeBatch(graph, () => {

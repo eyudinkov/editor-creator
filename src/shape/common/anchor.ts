@@ -24,8 +24,8 @@ const getAnchorPointDefaultStyle: GetAnchorPointStyle = (item, anchorPoint) => {
     ...(attrs[typeShape] || attrs.rect),
     r: 3,
     lineWidth: 2,
-    fill: '#FFFFFF',
-    stroke: '#5AAAFF',
+    fill: '#ffffff',
+    stroke: '#5aaaff',
   };
 };
 

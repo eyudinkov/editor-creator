@@ -28,7 +28,7 @@ const dragAddNodeBehavior: DragAddNodeBehavior = {
     };
   },
 
-  handleCanvasMouseEnter(e) {
+  handleCanvasMouseEnter(e: GraphEvent) {
     const { graph, shape } = this;
 
     if (shape) {
@@ -73,7 +73,7 @@ const dragAddNodeBehavior: DragAddNodeBehavior = {
     graph.paint();
   },
 
-  handleMouseMove(e) {
+  handleMouseMove(e: GraphEvent) {
     const { graph } = this;
     const { width, height } = this.shape.getBBox();
 
@@ -88,7 +88,7 @@ const dragAddNodeBehavior: DragAddNodeBehavior = {
     graph.paint();
   },
 
-  handleMouseUp(e) {
+  handleMouseUp(e: GraphEvent) {
     const { graph } = this;
     const { width, height } = this.shape.getBBox();
 

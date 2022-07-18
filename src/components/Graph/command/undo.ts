@@ -1,13 +1,14 @@
 import { Command } from '@/common/interfaces';
 import CommandManager from '@/common/CommandManager';
 import { GraphMode, GraphCustomEvent } from '@/common/constants';
+import { Graph } from '@/common/interfaces';
 
 const undoCommand: Command = {
   name: 'undo',
 
   params: {},
 
-  canExecute(graph) {
+  canExecute(graph: Graph) {
     const commandManager: CommandManager = graph.get('commandManager');
     const { commandIndex } = commandManager;
 
@@ -24,7 +25,7 @@ const undoCommand: Command = {
 
   init() {},
 
-  execute(graph) {
+  execute(graph: Graph) {
     const commandManager: CommandManager = graph.get('commandManager');
     const { commandQueue, commandIndex } = commandManager;
 

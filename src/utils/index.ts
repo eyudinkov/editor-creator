@@ -15,7 +15,7 @@ export class G6GraphEvent extends GraphEventLib {
   public canvasY: number;
   public wheelDelta: number;
   public detail: number;
-  public target: Item & Canvas;
+  public declare target: Item & Canvas;
 
   constructor(type: string, event: GraphEvent) {
     super(type, event);
@@ -55,7 +55,7 @@ export const toQueryString = (obj: object) =>
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
     .join('&');
 
-export function executeBatch(graph: Graph, execute: Function) {
+export function executeBatch(graph: Graph, execute: () => unknown) {
   const autoPaint = graph.get('autoPaint');
 
   graph.setAutoPaint(false);

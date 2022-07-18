@@ -1,6 +1,6 @@
 import { isMind, executeBatch } from '@/utils';
 import { ItemType, GraphMode, GraphCustomEvent } from '@/common/constants';
-import { TreeGraph, MindData, NodeModel, EdgeModel } from '@/common/interfaces';
+import { TreeGraph, MindData, NodeModel, EdgeModel, Graph } from '@/common/interfaces';
 import { BaseCommand, baseCommand } from '@/components/Graph/command/base';
 
 export interface RemoveCommandParams {
@@ -32,14 +32,14 @@ const removeCommand: BaseCommand<RemoveCommandParams> = {
     },
   },
 
-  canExecute(graph) {
+  canExecute(graph: Graph) {
     const selectedNodes = this.getSelectedNodes(graph);
     const selectedEdges = this.getSelectedEdges(graph);
 
     return graph.getCurrentMode() !== GraphMode.Readonly && !!(selectedNodes.length || selectedEdges.length);
   },
 
-  init(graph) {
+  init(graph: Graph) {
     const selectedNodes = this.getSelectedNodes(graph);
     const selectedEdges = this.getSelectedEdges(graph);
 
@@ -78,7 +78,7 @@ const removeCommand: BaseCommand<RemoveCommandParams> = {
     }
   },
 
-  execute(graph) {
+  execute(graph: Graph) {
     if (isMind(graph)) {
       const { model } = this.params.mind;
 
@@ -102,7 +102,7 @@ const removeCommand: BaseCommand<RemoveCommandParams> = {
     }
   },
 
-  undo(graph) {
+  undo(graph: Graph) {
     if (isMind(graph)) {
       const { model, parent } = this.params.mind;
 

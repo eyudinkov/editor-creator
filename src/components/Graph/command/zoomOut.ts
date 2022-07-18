@@ -1,5 +1,6 @@
 import { BaseCommand, baseCommand } from '@/components/Graph/command/base';
 import { GraphCustomEvent } from '@/common/constants';
+import { Graph } from '@/common/interfaces';
 
 const DELTA = 0.05;
 
@@ -10,7 +11,7 @@ const zoomOutCommand: BaseCommand = {
     return false;
   },
 
-  execute(graph) {
+  execute(graph: Graph) {
     const ratio = 1 - DELTA;
 
     const zoom = graph.getZoom() * ratio;

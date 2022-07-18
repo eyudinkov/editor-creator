@@ -1,6 +1,6 @@
 import { guid, executeBatch, isDefined } from '@/utils';
 import { ItemType, GraphCustomEvent, GraphMode } from '@/common/constants';
-import { NodeModel } from '@/common/interfaces';
+import { NodeModel, Graph } from '@/common/interfaces';
 import { BaseCommand, baseCommand } from '@/components/Graph/command/base';
 
 export interface DuplicateCommandParams {
@@ -16,11 +16,11 @@ export const dublicateCommand: BaseCommand<DuplicateCommandParams> = {
     mapNode: () => {},
   },
 
-  canExecute(graph) {
+  canExecute(graph: Graph) {
     return graph.getCurrentMode() !== GraphMode.Readonly && !!this.getSelectedNodes(graph).length;
   },
 
-  init(graph) {
+  init(graph: Graph) {
     const selectedNodes = this.getSelectedNodes(graph);
 
     const models = selectedNodes.map(node => node.getModel());
@@ -49,7 +49,7 @@ export const dublicateCommand: BaseCommand<DuplicateCommandParams> = {
     });
   },
 
-  execute(graph) {
+  execute(graph: Graph) {
     const { models } = this.params;
 
     executeBatch(graph, () => {
@@ -70,7 +70,7 @@ export const dublicateCommand: BaseCommand<DuplicateCommandParams> = {
     }
   },
 
-  undo(graph) {
+  undo(graph: Graph) {
     const { models } = this.params;
 
     executeBatch(graph, () => {

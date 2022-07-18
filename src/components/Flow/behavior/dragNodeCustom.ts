@@ -4,9 +4,9 @@ import behaviorManager from '@/common/behaviorManager';
 const { deepMix } = G6.Util;
 
 const delegateStyle = {
-  fill: '#F3F9FF',
+  fill: '#f3f9ff',
   fillOpacity: 0.5,
-  stroke: '#1890FF',
+  stroke: '#1890ff',
   strokeOpacity: 0.9,
   lineDash: [5, 5],
 };
@@ -36,7 +36,6 @@ interface DragNodeBehavior extends Behavior {
     minY?: number;
   };
   shape: GShape | null;
-
   fn: (e: MouseEvent) => void | null;
   onDragEnd(e: GraphEvent): void;
   onDragStart(e: GraphEvent): void;
@@ -143,7 +142,7 @@ const dragNode: DragNodeBehavior & ThisType<DragNodeBehavior & DefaultConfig> = 
     this.originPoint = {};
   },
 
-  onDrag(e) {
+  onDrag(e: GraphEvent) {
     if (!this.origin) {
       return;
     }
@@ -170,7 +169,7 @@ const dragNode: DragNodeBehavior & ThisType<DragNodeBehavior & DefaultConfig> = 
     graph.setAutoPaint(autoPaint);
   },
 
-  onDragEnd(e) {
+  onDragEnd(e: GraphEvent) {
     if (!this.origin || !this.shouldEnd.call(this, e)) {
       return;
     }
@@ -213,13 +212,13 @@ const dragNode: DragNodeBehavior & ThisType<DragNodeBehavior & DefaultConfig> = 
     graph.setAutoPaint(autoPaint);
   },
 
-  onOutOfRange(e) {
+  onOutOfRange(e: GraphEvent) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     if (this.origin) {
       const canvasElement = self.graph.get('canvas').get('el');
-      const fn = ev => {
-        if (ev.target !== canvasElement) {
+      const fn = event => {
+        if (event.target !== canvasElement) {
           self.onDragEnd(e);
         }
       };
@@ -228,7 +227,7 @@ const dragNode: DragNodeBehavior & ThisType<DragNodeBehavior & DefaultConfig> = 
     }
   },
 
-  _update(item, e, force) {
+  _update(item: Item, e: GraphEvent, force: boolean) {
     const origin = this.origin;
     const model = item.get('model');
     const nodeId = item.get('id');
@@ -255,7 +254,7 @@ const dragNode: DragNodeBehavior & ThisType<DragNodeBehavior & DefaultConfig> = 
     }
   },
 
-  _updateDelegate(e, x, y) {
+  _updateDelegate(e: GraphEvent, x: number, y: number) {
     const bbox = e.item.get('keyShape').getBBox();
     if (!this.shape) {
       const parent = this.graph.get('group');

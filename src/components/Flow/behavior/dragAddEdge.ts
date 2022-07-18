@@ -58,13 +58,13 @@ const dragAddEdgeBehavior: DragAddEdgeBehavior & ThisType<DragAddEdgeBehavior & 
     return {};
   },
 
-  isEnabledAnchorPoint(e) {
+  isEnabledAnchorPoint(e: GraphEvent) {
     const { target } = e;
 
     return !!target.get('isAnchorPoint') && target.get('anchorPointState') === AnchorPointState.Enabled;
   },
 
-  isNotSelf(e) {
+  isNotSelf(e: GraphEvent) {
     const { edge } = this;
     const { item } = e;
 
@@ -79,22 +79,22 @@ const dragAddEdgeBehavior: DragAddEdgeBehavior & ThisType<DragAddEdgeBehavior & 
     return nodes.filter(node => node.getModel().id !== sourceId);
   },
 
-  canFindTargetAnchorPoint(e) {
+  canFindTargetAnchorPoint(e: GraphEvent) {
     return this.isEnabledAnchorPoint(e) && this.isNotSelf(e);
   },
 
-  shouldAddDelegateEdge(e) {
+  shouldAddDelegateEdge(e: GraphEvent) {
     return this.isEnabledAnchorPoint(e);
   },
 
-  shouldAddRealEdge(e) {
+  shouldAddRealEdge(e: GraphEvent) {
     const { target } = e;
     const { edge } = this;
     const targetEdge = edge.getTarget();
     return !!target.get('isAnchorPoint') && !isPlainObject(targetEdge);
   },
 
-  handleNodeMouseEnter(e) {
+  handleNodeMouseEnter(e: GraphEvent) {
     const { graph, getAnchorPointStateOfSourceNode } = this;
 
     const sourceNode = e.item as Node;
@@ -110,7 +110,7 @@ const dragAddEdgeBehavior: DragAddEdgeBehavior & ThisType<DragAddEdgeBehavior & 
     graph.setItemState(sourceNode, ItemState.ActiveAnchorPoints, true);
   },
 
-  handleNodeMouseLeave(e) {
+  handleNodeMouseLeave(e: GraphEvent) {
     const { graph, edge } = this;
     const { item } = e;
 
@@ -120,7 +120,7 @@ const dragAddEdgeBehavior: DragAddEdgeBehavior & ThisType<DragAddEdgeBehavior & 
     }
   },
 
-  handleNodeMouseDown(e) {
+  handleNodeMouseDown(e: GraphEvent) {
     if (!this.shouldBegin(e) || !this.shouldAddDelegateEdge(e)) {
       return;
     }
@@ -135,14 +135,14 @@ const dragAddEdgeBehavior: DragAddEdgeBehavior & ThisType<DragAddEdgeBehavior & 
 
     const model: EdgeModel = {
       id: guid(),
-      label: 'Label',
+      label: 'label',
       type: edgeType,
       source: sourceNodeId,
       sourceAnchor: sourceAnchorPointIndex,
       target: {
         x: e.x,
         y: e.y,
-      } as any,
+      },
       ...this.getDefaultEdgeModel(),
     };
 
@@ -168,7 +168,7 @@ const dragAddEdgeBehavior: DragAddEdgeBehavior & ThisType<DragAddEdgeBehavior & 
     });
   },
 
-  handleMouseMove(e) {
+  handleMouseMove(e: GraphEvent) {
     const { graph, edge } = this;
 
     if (!edge) {
@@ -190,7 +190,7 @@ const dragAddEdgeBehavior: DragAddEdgeBehavior & ThisType<DragAddEdgeBehavior & 
         target: {
           x: e.x,
           y: e.y,
-        } as any,
+        },
         targetAnchor: undefined,
       });
     }
@@ -200,7 +200,7 @@ const dragAddEdgeBehavior: DragAddEdgeBehavior & ThisType<DragAddEdgeBehavior & 
     return true;
   },
 
-  handleMouseUp(e) {
+  handleMouseUp(e: GraphEvent) {
     const { graph, edge } = this;
 
     if (!edge) {

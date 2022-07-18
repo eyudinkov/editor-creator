@@ -15,13 +15,15 @@ const hoverAnchor: HoverAnchorBehavior = {
       mouseout: 'onLeaveAnchor',
     };
   },
-  shouldBegin(ev) {
-    const { target } = ev;
+
+  shouldBegin(e: GraphEvent) {
+    const { target } = e;
     const targetName = target.get('name');
     if (targetName === 'anchorPoint') return true;
     else return false;
   },
-  onEnterAnchor(e) {
+
+  onEnterAnchor(e: GraphEvent) {
     if (!this.shouldBegin(e)) return;
     const graph = this.graph;
     const node = e.item;
@@ -29,7 +31,8 @@ const hoverAnchor: HoverAnchorBehavior = {
     const index = target.cfg.anchorPointIndex;
     graph.setItemState(node, 'activeAnchor' + index, true);
   },
-  onLeaveAnchor(e) {
+
+  onLeaveAnchor(e: GraphEvent) {
     if (!this.shouldBegin(e)) return;
     const graph = this.graph;
     const node = e.item;

@@ -32,7 +32,9 @@ import { INode, IEdge, ICombo } from '@antv/g6/lib/interface/item';
 export interface GShape extends IGShape {}
 export interface GGroup extends IGGroup {}
 
-export interface Graph extends IGraph {}
+export interface Graph extends IGraph {
+  refreshLayout: any;
+}
 export interface TreeGraph extends ITreeGraph {}
 
 export interface AnchorPoint extends IPoint {
@@ -64,19 +66,16 @@ export interface NodeModel extends INodeConfig {
     shadowBlur?: number;
     shadowOffsetX?: number;
     shadowOffsetY?: number;
-
     [propName: string]: any;
   };
   label?: string;
   labelCfg?: NodeLabelCfg;
-
   center?: 'center' | 'topLeft';
-
   [propName: string]: any;
 }
 export interface EdgeModel extends IEdgeConfig {
   source: string;
-  target: string;
+  target: any;
   sourceAnchor?: number;
   targetAnchor?: number;
   startPoint?: {
@@ -101,7 +100,6 @@ export interface EdgeModel extends IEdgeConfig {
   };
   label?: string;
   labelCfg?: EdgeLabelCfg;
-
   [propName: string]: any;
 }
 export interface ComboModel extends IComboConfig {}
@@ -175,7 +173,6 @@ interface LabelStyle {
   opacity?: number;
   font?: string;
   fontSize?: number;
-
   [propName: string]: any;
 }
 

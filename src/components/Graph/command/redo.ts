@@ -1,4 +1,4 @@
-import { Command } from '@/common/interfaces';
+import { Command, Graph } from '@/common/interfaces';
 import CommandManager from '@/common/CommandManager';
 import { GraphMode } from '@/common/constants';
 
@@ -24,7 +24,7 @@ const redoCommand: Command = {
 
   init() {},
 
-  execute(graph) {
+  execute(graph: Graph) {
     const commandManager: CommandManager = graph.get('commandManager');
     const { commandQueue, commandIndex } = commandManager;
 

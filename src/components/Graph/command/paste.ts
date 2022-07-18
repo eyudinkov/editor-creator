@@ -1,7 +1,7 @@
 import { guid, executeBatch } from '@/utils';
 import global from '@/common/global';
 import { ItemType, GraphMode, GraphCustomEvent } from '@/common/constants';
-import { NodeModel } from '@/common/interfaces';
+import { NodeModel, Graph } from '@/common/interfaces';
 import { BaseCommand, baseCommand } from '@/components/Graph/command/base';
 
 export interface PasteCommandParams {
@@ -15,7 +15,7 @@ const pasteCommand: BaseCommand<PasteCommandParams> = {
     models: [],
   },
 
-  canExecute(graph) {
+  canExecute(graph: Graph) {
     return graph.getCurrentMode() !== GraphMode.Readonly && !!global.clipboard.models.length;
   },
 
@@ -39,7 +39,7 @@ const pasteCommand: BaseCommand<PasteCommandParams> = {
     };
   },
 
-  execute(graph) {
+  execute(graph: Graph) {
     const { models } = this.params;
 
     executeBatch(graph, () => {
@@ -60,7 +60,7 @@ const pasteCommand: BaseCommand<PasteCommandParams> = {
     }
   },
 
-  undo(graph) {
+  undo(graph: Graph) {
     const { models } = this.params;
 
     executeBatch(graph, () => {

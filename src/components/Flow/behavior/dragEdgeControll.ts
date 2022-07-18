@@ -111,13 +111,13 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
     );
   },
 
-  targetIsStartControlPoint(target) {
+  targetIsStartControlPoint(target: Item) {
     const targetName = target.get('className');
 
     return targetName === ControlPointClassNames.EDGE_CONTROLL_POINT_START;
   },
 
-  onMouseDown(e) {
+  onMouseDown(e: GraphEvent) {
     if (!this.shouldBegin(e)) return;
 
     this.isStartControlPoint = this.targetIsStartControlPoint(e.target);
@@ -165,8 +165,8 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
     });
   },
 
-  isAnchor(ev) {
-    const { target } = ev;
+  isAnchor(e: GraphEvent) {
+    const { target } = e;
     const targetName = target.get('name');
 
     if (targetName === ANCHOR_POINT_NAME) {
@@ -176,8 +176,8 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
     }
   },
 
-  notSelf(ev) {
-    const node = ev.item;
+  notSelf(e: GraphEvent) {
+    const node = e.item;
     const model = node.getModel();
 
     if (!this.isStartControlPoint) {
@@ -189,13 +189,13 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
     return true;
   },
 
-  addEdgeCheck(ev, inFlag = undefined) {
+  addEdgeCheck(e: GraphEvent, inFlag = undefined) {
     const { graph, isAnchor } = this;
     const linkRule = graph.get('defaultEdge').linkRule;
 
-    if (!isAnchor(ev)) return false;
+    if (!isAnchor(e)) return false;
 
-    return checkOutAndInEdge(ev.item as Node, inFlag, linkRule);
+    return checkOutAndInEdge(e.item as Node, inFlag, linkRule);
   },
 
   onNodeMouseLeave(e) {
@@ -214,21 +214,21 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
     }
   },
 
-  onMousemove(ev) {
+  onMousemove(e: GraphEvent) {
     const { graph } = this;
     if (this.addingEdge) {
-      const point = { x: ev.x, y: ev.y };
+      const point = { x: e.x, y: e.y };
       const pointName = this.isStartControlPoint ? 'source' : 'target';
 
       graph.setItemState(this.edge, 'move', true);
       const flag = this.isStartControlPoint ? 'out' : 'in';
 
-      if (this.addEdgeCheck.call(this, ev, flag) && this.notSelf(ev)) {
-        const node = ev.item;
+      if (this.addEdgeCheck.call(this, e, flag) && this.notSelf(e)) {
+        const node = e.item;
         const model = node.getModel();
         const anchorName = this.isStartControlPoint ? 'sourceAnchor' : 'targetAnchor';
         graph.updateItem(this.edge, {
-          [anchorName]: ev.target.get('anchorPointIndex'),
+          [anchorName]: e.target.get('anchorPointIndex'),
           [pointName]: model.id,
         });
       } else {
@@ -237,7 +237,7 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
     }
   },
 
-  isOnlyOneEdge(node) {
+  isOnlyOneEdge(node: Node) {
     if (this.allowMultiEdge) return true;
 
     const source = this.edge.getSource().get('id');
@@ -292,9 +292,9 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
     return edgeExist || transitiveNodeHaveEdge ? false : true;
   },
 
-  onMouseup(ev) {
+  onMouseup(e: GraphEvent) {
     const { graph } = this;
-    const node = ev.item as Node;
+    const node = e.item as Node;
     const pointName = this.isStartControlPoint ? 'source' : 'target';
     const anchorName = this.isStartControlPoint ? 'sourceAnchor' : 'targetAnchor';
 
@@ -320,7 +320,7 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
     };
 
     const flag = this.isStartControlPoint ? 'out' : 'in';
-    if (!this.addEdgeCheck.call(this, ev, flag)) {
+    if (!this.addEdgeCheck.call(this, e, flag)) {
       if (this.edge && this.addingEdge) {
         resetEdge();
         hideAnchors();
@@ -330,7 +330,7 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
 
     const model = node.getModel();
     if (this.addingEdge && this.edge) {
-      if (!this.notSelf(ev) || !this.isOnlyOneEdge(node) || !this.customValidation(ev)) {
+      if (!this.notSelf(e) || !this.isOnlyOneEdge(node) || !this.customValidation(e)) {
         resetEdge();
         hideAnchors();
         return;
@@ -343,7 +343,7 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
 
       const modelEdge = this.edge.getModel();
       graph.updateItem(this.edge, {
-        [anchorName]: ev.target.get('anchorPointIndex'),
+        [anchorName]: e.target.get('anchorPointIndex'),
         [pointName]: model.id,
       });
 
@@ -354,7 +354,7 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
           id: modelEdge.id,
         },
         updateModel: {
-          [anchorName]: ev.target.get('anchorPointIndex'),
+          [anchorName]: e.target.get('anchorPointIndex'),
           [pointName]: model.id,
         },
       });

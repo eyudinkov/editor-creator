@@ -1,5 +1,5 @@
 import { GraphMode, ItemType } from '@/common/constants';
-import { EdgeModel } from '@/common/interfaces';
+import { EdgeModel, Graph } from '@/common/interfaces';
 import { BaseCommand, baseCommand } from '@/components/Graph/command/base';
 import { executeBatch } from '@/utils';
 
@@ -11,7 +11,7 @@ export interface ChangeEdgeControllParams {
 const changeEdgeControll: BaseCommand<ChangeEdgeControllParams> = {
   ...baseCommand,
 
-  canExecute(graph) {
+  canExecute(graph: Graph) {
     return graph.getCurrentMode() !== GraphMode.Readonly;
   },
 
@@ -20,7 +20,7 @@ const changeEdgeControll: BaseCommand<ChangeEdgeControllParams> = {
     updateModel: null,
   },
 
-  execute(graph) {
+  execute(graph: Graph) {
     const { model, updateModel } = this.params;
 
     executeBatch(graph, () => {
@@ -32,7 +32,7 @@ const changeEdgeControll: BaseCommand<ChangeEdgeControllParams> = {
     });
   },
 
-  undo(graph) {
+  undo(graph: Graph) {
     const { model } = this.params;
 
     executeBatch(graph, () => {

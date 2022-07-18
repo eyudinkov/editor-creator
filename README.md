@@ -1,8 +1,8 @@
-<h1 align="center">Editor-Creator</h1>
+# Editor-Creator
 
-<div align="center">
+***
+
 Editor-Creator is a graph visualization engine, which provides a bunch of predefined blocks and layouts and based on G6 and React.
-</div>
 
 ## Installation
 
