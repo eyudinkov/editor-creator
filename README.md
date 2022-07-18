@@ -4,6 +4,8 @@
 
 Editor-Creator is a graph visualization engine, which provides a bunch of predefined blocks and layouts and based on G6 and React.
 
+![Cover](https://raw.githubusercontent.com/eyudinkov/editor-creator/main/images/cover.png)
+
 ## Installation
 
 ```bash
