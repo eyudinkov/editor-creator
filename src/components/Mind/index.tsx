@@ -2,15 +2,18 @@ import React from 'react';
 import omit from 'lodash/omit';
 import merge from 'lodash/merge';
 import G6 from '@antv/g6';
-import { guid, recursiveTraversal } from '@/utils';
 import global from '@/common/global';
+
+import { guid, recursiveTraversal } from '@/utils';
 import { MIND_CONTAINER_ID, GraphType } from '@/common/constants';
 import { FOLD_BUTTON_CLASS_NAME, UNFOLD_BUTTON_CLASS_NAME } from '@/shape/nodes/mindNode';
 import { Graph, GraphOptions, MindData, GraphReactEventProps } from '@/common/interfaces';
+
 import behaviorManager from '@/common/behaviorManager';
 import GraphComponent from '@/components/Graph';
 
 import './command';
+import { Modes } from '@antv/g6/lib/types';
 
 interface MindProps extends Partial<GraphReactEventProps> {
   style?: React.CSSProperties;
@@ -50,7 +53,7 @@ class Mind extends React.Component<MindProps, MindState> {
     return target && [FOLD_BUTTON_CLASS_NAME, UNFOLD_BUTTON_CLASS_NAME].includes(target.get('className'));
   };
 
-  parseData = data => {
+  parseData = (data: { [key: string]: any }) => {
     recursiveTraversal(data, item => {
       const { id } = item;
 
@@ -66,7 +69,7 @@ class Mind extends React.Component<MindProps, MindState> {
     const { containerId } = this;
     const { graphConfig, customModes } = this.props;
 
-    const modes: any = merge(behaviorManager.getRegisteredBehaviors(GraphType.Mind), {
+    const modes = (merge(behaviorManager.getRegisteredBehaviors(GraphType.Mind), {
       default: {
         'click-item': {
           type: 'click-item',
@@ -86,7 +89,7 @@ class Mind extends React.Component<MindProps, MindState> {
           shouldUpdate: this.canDragOrZoomCanvas,
         },
       },
-    });
+    }) as unknown) as Modes;
 
     Object.keys(modes).forEach(mode => {
       const behaviors = modes[mode];

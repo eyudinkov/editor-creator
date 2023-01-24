@@ -93,7 +93,7 @@ export enum EditorCommand {
   ResetZoom = 'resetZoom',
   ShowEdges = 'showEdges',
   HideEdges = 'hideEdges',
-  ChangeEdgeControll = 'changeEdgeControll',
+  ChangeEdgeControl = 'changeEdgeControl',
 }
 
 export enum GraphComboEvent {
@@ -210,7 +210,7 @@ export enum GraphCustomEvent {
   onAfterLayout = 'afterlayout',
   onBeforeConnect = 'beforeconnect',
   onAfterConnect = 'afterconnect',
-  onHidePortalTriger = 'hideportaltriger',
+  onHidePortalTrigger = 'hideportaltrigger',
   onShowActionMenu = 'showactionmenu',
   onAfterResize = 'afterresize',
   onClickTag = 'clicktag',

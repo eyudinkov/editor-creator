@@ -290,7 +290,7 @@ export default class MiniMap extends Base {
     const bbox = item.getBBox();
     const cKeyShape = item.get('keyShape').clone();
     const keyShapeStyle = cKeyShape.attr();
-    let attrs: any = {
+    let attrs = {
       x: bbox.centerX,
       y: bbox.centerY,
     };

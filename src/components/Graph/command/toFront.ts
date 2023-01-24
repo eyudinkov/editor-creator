@@ -59,6 +59,11 @@ const toFrontCommand: BaseCommand<ToFrontCommandParams> = {
       });
     });
   },
+
+  shortcuts: [
+    ['metaKey', 'BracketRight'],
+    ['ctrlKey', 'BracketRight'],
+  ],
 };
 
 export default toFrontCommand;

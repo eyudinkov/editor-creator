@@ -89,7 +89,7 @@ const removeCommand: BaseCommand<RemoveCommandParams> = {
       (graph as TreeGraph).removeChild(model.id);
     } else {
       const { nodes, edges } = this.params.flow;
-      graph.emit(GraphCustomEvent.onHidePortalTriger, null);
+      graph.emit(GraphCustomEvent.onHidePortalTrigger, null);
 
       executeBatch(graph, () => {
         [...Object.keys(nodes), ...Object.keys(edges)].forEach(id => {

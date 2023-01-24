@@ -1,5 +1,5 @@
 import './dragAddNode';
 import './dragAddEdge';
 import './hoverAnchor';
-import './dragEdgeControll';
+import './dragEdgeControl';
 import './dragNodeCustom';

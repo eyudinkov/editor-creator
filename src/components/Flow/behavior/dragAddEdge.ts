@@ -16,7 +16,7 @@ interface DragAddEdgeBehavior extends Behavior {
   handleNodeMouseDown(e: GraphEvent): void;
   handleMouseMove(e: GraphEvent): void;
   handleMouseUp(e: GraphEvent): void;
-  getDefaultEdgeModel(): { [key: string]: any };
+  getDefaultEdgeModel(): object;
   customValidation(e: GraphEvent): boolean;
 }
 

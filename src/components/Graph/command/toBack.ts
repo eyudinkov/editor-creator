@@ -59,6 +59,11 @@ const toBackCommand: BaseCommand<ToBackCommandParams> = {
       });
     });
   },
+
+  shortcuts: [
+    ['metaKey', 'BracketLeft'],
+    ['ctrlKey', 'BracketLeft'],
+  ],
 };
 
 export default toBackCommand;

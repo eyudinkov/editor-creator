@@ -12,6 +12,7 @@ class Global {
       y: number;
     };
     models: NodeModel[];
+    [key: string]: any;
   } = {
     point: {
       x: 0,

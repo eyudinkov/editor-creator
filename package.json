@@ -9,8 +9,14 @@
     "type": "git",
     "url": "git@github.com:eyudinkov/editor-creator.git"
   },
+  "keywords": [
+    "graph",
+    "react",
+    "flow",
+    "@antv/g6"
+  ],
   "version": "1.0.3",
-  "description": "",
+  "description": "A graph visualization engine, which provides a bunch of predefined blocks and layouts and based on G6 and React",
   "main": "lib/index.js",
   "unpkg": "dist/index.js",
   "module": "es/index.js",

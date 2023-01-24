@@ -26,7 +26,7 @@ type LinkRule = {
   };
 };
 
-interface DragEdgeControllBehavior extends Behavior {
+interface DragEdgeControlBehavior extends Behavior {
   onMouseDown(e: GraphEvent): void;
   onMousemove(e: GraphEvent): void;
   onMouseup(e: GraphEvent): void;
@@ -72,7 +72,7 @@ function checkOutAndInEdge(item: Node, type: string, linkRule: LinkRule) {
   }
 }
 
-const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeControllBehavior & DefaultConfig> = {
+const dragEdgeControlBehavior: DragEdgeControlBehavior & ThisType<DragEdgeControlBehavior & DefaultConfig> = {
   graphType: GraphType.Flow,
   target: null,
   source: null,
@@ -348,7 +348,7 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
       });
 
       const commandManager: CommandManager = graph.get('commandManager');
-      commandManager.execute(graph, EditorCommand.ChangeEdgeControll, {
+      commandManager.execute(graph, EditorCommand.ChangeEdgeControl, {
         model: {
           ...this.initEdgeModel,
           id: modelEdge.id,
@@ -372,4 +372,4 @@ const dragEdgeControllBehavior: DragEdgeControllBehavior & ThisType<DragEdgeCont
   },
 };
 
-behaviorManager.register('drag-edge-controll', dragEdgeControllBehavior);
+behaviorManager.register('drag-edge-control', dragEdgeControlBehavior);

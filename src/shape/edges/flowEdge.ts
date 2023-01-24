@@ -1,9 +1,13 @@
 import G6 from '@antv/g6';
+
 import { GGroup, CustomEdge, GShape, Item } from '@/common/interfaces';
 import { ItemState } from '@/common/constants';
+
+import { getPolygon } from '@/utils';
+import { IPoint, LabelStyle, ModelConfig } from '@antv/g6/lib/types';
+
 import merge from 'lodash/merge';
 import isNil from 'lodash/isNil';
-import { getPolygon } from '@/utils';
 
 const { deepMix, mix, getLabelPosition } = G6.Util;
 
@@ -100,21 +104,21 @@ const flowEdge: CustomEdge = {
 
     if (source === undefined || target === undefined || source === null || target === null) return;
 
-    const points: any = {
+    const points = {
       source: {
-        ...(source as any),
-        bbox: (source as any).getBBox !== undefined ? (source as any).getBBox() : undefined,
+        ...(source as object),
+        bbox: source['getBBox'] !== undefined ? source['getBBox']() : undefined,
       },
       target: {
-        ...(target as any),
-        bbox: (target as any).getBBox !== undefined ? (target as any).getBBox() : undefined,
+        ...(target as object),
+        bbox: target['getBBox'] !== undefined ? target['getBBox']() : undefined,
       },
     };
 
-    return points as any;
+    return (points as unknown) as IPoint[];
   },
 
-  getPath(points) {
+  getPath(points: IPoint[]) {
     if (points.length === 2) {
       const [startPoint, endPoint] = points;
       return getPolygon([startPoint, endPoint]);
@@ -132,7 +136,7 @@ const flowEdge: CustomEdge = {
     return merge({}, this.options, this.getCustomConfig(model), model);
   },
 
-  getShapeStyle(model: any) {
+  getShapeStyle(model: ModelConfig) {
     const customOptions = this.getCustomConfig(model) || {};
     const { style: defaultStyle } = this.getOptions(model);
     const { style: customStyle } = customOptions;
@@ -147,7 +151,7 @@ const flowEdge: CustomEdge = {
     const startPoint = model.startPoint;
     const endPoint = model.endPoint;
     const controlPoints = this.getControlPoints(model);
-    let points = [startPoint];
+    let points: IPoint[] = [startPoint];
 
     if (controlPoints) {
       points = points.concat(controlPoints);
@@ -168,7 +172,7 @@ const flowEdge: CustomEdge = {
     return styles;
   },
 
-  getOffsetStyle(model, group) {
+  getOffsetStyle(model: ModelConfig, group) {
     const pathShape = group.findByClassName(CLS_SHAPE);
     const {
       labelCfg: { position: labelPosition, refX, refY, autoRotate: autoRotateOpt },
@@ -189,30 +193,31 @@ const flowEdge: CustomEdge = {
   getLabelStyle(cfg, labelCfg, group) {
     const calculateStyle = this.getLabelStyleByPosition(cfg, labelCfg, group);
     if ((cfg.label as string).length > MAX_LENGTH_LABEL) {
-      (calculateStyle as any).text = `${(cfg.label as string).slice(0, MAX_LENGTH_LABEL)}...`;
+      calculateStyle.text = `${(cfg.label as string).slice(0, MAX_LENGTH_LABEL)}...`;
     } else {
-      (calculateStyle as any).text = cfg.label;
+      calculateStyle.text = cfg.label as string;
     }
     const { labelCfg: defaultLabel } = this.getOptions(cfg);
 
     const defaultStyle = defaultLabel ? defaultLabel.style : null;
     const labelStyle = mix({}, labelCfg.style, defaultStyle, calculateStyle);
+
     return labelStyle;
   },
 
-  getLabelStyleByPosition(cfg, labelCfg, group) {
-    const style: { [propName: string]: any } = {};
+  getLabelStyleByPosition(cfg, _, group) {
+    const style: LabelStyle & Partial<{ text?: string }> = {};
     const labelPosition = this.options.labelCfg.position;
     const offsetStyle = this.getOffsetStyle(cfg, group);
     style.x = offsetStyle.x;
     style.y = offsetStyle.y;
     style.textAlign = this._getTextAlign(labelPosition, offsetStyle.angle);
-    style.text = cfg.label;
+    style.text = cfg.label as string;
 
     return style;
   },
 
-  createLabelWrapper(model, group: GGroup) {
+  createLabelWrapper(model: ModelConfig, group: GGroup) {
     const label = group.findByClassName(EDGE_LABEL_CLASS_NAME);
     const labelWrapper = group.findByClassName(EDGE_LABEL_WRAPPER_CLASS_NAME);
 
@@ -240,7 +245,7 @@ const flowEdge: CustomEdge = {
     group.sort();
   },
 
-  updateLabelWrapper(model, group: GGroup) {
+  updateLabelWrapper(_: ModelConfig, group: GGroup) {
     const label = group.findByClassName(EDGE_LABEL_CLASS_NAME);
     const labelWrapper = group.findByClassName(EDGE_LABEL_WRAPPER_CLASS_NAME);
 
@@ -265,7 +270,7 @@ const flowEdge: CustomEdge = {
     });
   },
 
-  drawControllPoints(active: boolean, item) {
+  drawControllPoints(active: boolean, item: Item) {
     const group = item.getContainer();
 
     if (active) {
@@ -309,7 +314,7 @@ const flowEdge: CustomEdge = {
     }
   },
 
-  updateControllPoints(model, group) {
+  updateControllPoints(model: ModelConfig, group: GGroup) {
     const controlPointStart = group.findByClassName(EDGE_CONTROLL_POINT_START);
     const controlPointEnd = group.findByClassName(EDGE_CONTROLL_POINT_END);
     const {
@@ -332,9 +337,9 @@ const flowEdge: CustomEdge = {
     group.sort();
   },
 
-  createActionLine(model, group: GGroup) {
+  createActionLine(model: ModelConfig, group: GGroup) {
     const shape = group.findByClassName(EDGE_ACTION_LINE);
-    const { path } = this.getShapeStyle(model) as any;
+    const { path } = this.getShapeStyle(model);
     const { actionLine } = this.getOptions(model);
 
     if (shape) {
@@ -350,9 +355,9 @@ const flowEdge: CustomEdge = {
     });
   },
 
-  updateActionLine(model, group) {
+  updateActionLine(model: ModelConfig, group: GGroup) {
     const shape = group.findByClassName(EDGE_ACTION_LINE);
-    const { path } = this.getShapeStyle(model) as any;
+    const { path } = this.getShapeStyle(model);
 
     if (shape) {
       shape.attr({
@@ -362,7 +367,6 @@ const flowEdge: CustomEdge = {
   },
 
   afterDraw(model, group) {
-    // this.createActionLine(model, group);
     this.createLabelWrapper(model, group);
     this.updateLabelWrapper(model, group);
   },
@@ -370,7 +374,6 @@ const flowEdge: CustomEdge = {
   afterUpdate(model, item) {
     const group = item.getContainer();
 
-    // this.updateActionLine(model, group);
     this.updateLabelWrapper(model, group);
   },
 

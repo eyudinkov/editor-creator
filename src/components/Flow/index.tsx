@@ -2,14 +2,18 @@ import React from 'react';
 import omit from 'lodash/omit';
 import merge from 'lodash/merge';
 import G6 from '@antv/g6';
+
 import { guid, isDefined } from '@/utils';
-import global from '@/common/global';
 import { FLOW_CONTAINER_ID, GraphType } from '@/common/constants';
 import { Graph, GraphOptions, FlowData, GraphEvent, GraphReactEventProps } from '@/common/interfaces';
-import behaviorManager from '@/common/behaviorManager';
-import GraphComponent from '@/components/Graph';
+
 import { EditorError } from '@/common/editorError';
 import { Modes } from '@antv/g6/lib/types';
+
+import global from '@/common/global';
+
+import behaviorManager from '@/common/behaviorManager';
+import GraphComponent from '@/components/Graph';
 
 import './behavior';
 
@@ -19,7 +23,7 @@ interface FlowProps extends Partial<GraphReactEventProps> {
   data: FlowData;
   graphConfig?: Partial<GraphOptions>;
   customBehaviors?: object;
-  customModes?: (mode: string, behaviors: any) => object;
+  customModes?: (mode: string, behaviors) => object;
 }
 
 interface FlowState {}
@@ -52,7 +56,7 @@ class Flow extends React.Component<FlowProps, FlowState> {
     );
   };
 
-  parseData = data => {
+  parseData = (data: { [key: string]: any }) => {
     const { nodes, edges, ...props } = data;
 
     const mapItem = items => {

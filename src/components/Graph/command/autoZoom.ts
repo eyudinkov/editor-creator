@@ -17,10 +17,15 @@ const autoZoomCommand: BaseCommand = {
   },
 
   execute(graph: Graph) {
-    graph.emit(GraphCustomEvent.onHidePortalTriger, null);
+    graph.emit(GraphCustomEvent.onHidePortalTrigger, null);
 
     graph.fitView(5);
   },
+
+  shortcuts: [
+    ['metaKey', 'Digit1'],
+    ['ctrlKey', 'Digit1'],
+  ],
 };
 
 export default autoZoomCommand;

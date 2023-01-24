@@ -32,6 +32,7 @@ interface DefaultConfig {
 const dragCanvasBehavior: DragCanvasBehavior & ThisType<DragCanvasBehavior & DefaultConfig> = {
   origin: null,
   dragging: false,
+  keydownSpace: false,
 
   getDefaultCfg(): DefaultConfig {
     return {
@@ -112,7 +113,7 @@ const dragCanvasBehavior: DragCanvasBehavior & ThisType<DragCanvasBehavior & Def
       return;
     }
 
-    if (self.keydown || e.shape) {
+    if (self.keydown || (!this.keydownSpace && e.shape)) {
       return;
     }
 
@@ -145,7 +146,7 @@ const dragCanvasBehavior: DragCanvasBehavior & ThisType<DragCanvasBehavior & Def
 
   onMouseMove(e: GraphEvent) {
     const { graph } = this;
-    if (this.keydown || e.shape) {
+    if (this.keydown || (!this.keydownSpace && e.shape)) {
       return;
     }
 
@@ -176,7 +177,7 @@ const dragCanvasBehavior: DragCanvasBehavior & ThisType<DragCanvasBehavior & Def
   onMouseUp(e: GraphEvent) {
     const { graph } = this;
 
-    if (this.keydown || e.shape) {
+    if (this.keydown || (!this.keydownSpace && e.shape)) {
       return;
     }
 
@@ -230,6 +231,8 @@ const dragCanvasBehavior: DragCanvasBehavior & ThisType<DragCanvasBehavior & Def
     if (!code) {
       return;
     }
+    self.keydownSpace = e.code === 'Space';
+    this.graph.set('dragCanvas', true);
     if (ALLOW_EVENTS.indexOf(code.toLowerCase()) > -1) {
       self.keydown = true;
     } else {
@@ -242,6 +245,8 @@ const dragCanvasBehavior: DragCanvasBehavior & ThisType<DragCanvasBehavior & Def
     this.origin = null;
     this.dragging = false;
     this.dragbegin = false;
+    this.keydownSpace = false;
+    this.graph.set('dragCanvas', false);
   },
 };
 

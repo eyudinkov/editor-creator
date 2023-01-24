@@ -1,5 +1,5 @@
 class CustomEventManager {
-  dispatch(eventType: string, data: Record<string, any>) {
+  dispatch(eventType: string, data: Record<string, unknown>) {
     const event = new CustomEvent(eventType, {
       detail: {
         ...data,

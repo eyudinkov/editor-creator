@@ -64,7 +64,7 @@ class BehaviorManager {
     this.behaviors[name] = behavior;
   }
 
-  registeBehaviors(config: { [key: string]: any } = {}): void {
+  registeBehaviors(config = {}): void {
     Object.keys(this.behaviors).forEach((name: string) => {
       const behavior = merge(this.behaviors[name], isDefined(config[name]) ? config[name] : {});
       const { graphType } = behavior;

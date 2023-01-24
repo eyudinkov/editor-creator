@@ -1,4 +1,4 @@
-import { isMind, getSelectedNodes, getSelectedEdges, setSelectedItems } from '@/utils';
+import { isMind, getSelectedNodes, getSelectedEdges, setSelectedItems, getSelectedItems } from '@/utils';
 import { LabelState, EditorEvent } from '@/common/constants';
 import { Graph, Item, Node, Edge, Command } from '@/common/interfaces';
 
@@ -8,6 +8,7 @@ export interface BaseCommand<P = object, G = Graph> extends Command<P, G> {
   getSelectedEdges(graph: G): Edge[];
   setSelectedItems(graph: G, items: Item[] | string[]): void;
   editSelectedNode(graph: G): void;
+  getSelectedItems(graph: G): Item[];
 }
 
 export const baseCommand: BaseCommand = {
@@ -42,6 +43,8 @@ export const baseCommand: BaseCommand = {
   getSelectedEdges,
 
   setSelectedItems,
+
+  getSelectedItems,
 
   editSelectedNode(graph) {
     graph.emit(EditorEvent.onLabelStateChange, {

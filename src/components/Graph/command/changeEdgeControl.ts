@@ -3,12 +3,12 @@ import { EdgeModel, Graph } from '@/common/interfaces';
 import { BaseCommand, baseCommand } from '@/components/Graph/command/base';
 import { executeBatch } from '@/utils';
 
-export interface ChangeEdgeControllParams {
+export interface ChangeEdgeControlParams {
   model: EdgeModel | null;
   updateModel: Partial<EdgeModel> | null;
 }
 
-const changeEdgeControll: BaseCommand<ChangeEdgeControllParams> = {
+const ChangeEdgeControl: BaseCommand<ChangeEdgeControlParams> = {
   ...baseCommand,
 
   canExecute(graph: Graph) {
@@ -42,4 +42,4 @@ const changeEdgeControll: BaseCommand<ChangeEdgeControllParams> = {
   },
 };
 
-export default changeEdgeControll;
+export default ChangeEdgeControl;

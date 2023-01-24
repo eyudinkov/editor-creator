@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
 import global from '@/common/global';
@@ -13,8 +13,11 @@ import {
 } from '@/components/EditorContext';
 import customEventManager from '@/common/CustomEventManager';
 
+const SPECIAL_KEYS = ['ctrlKey', 'altKey', 'shiftKey', 'metaKey'];
+
 interface EditorProps {
   style?: React.CSSProperties;
+  children: ReactElement[];
   className?: string;
   [EditorEvent.onBeforeExecuteCommand]?: (e: CommandEvent) => void;
   [EditorEvent.onAfterExecuteCommand]?: (e: CommandEvent) => void;
@@ -92,7 +95,7 @@ class Editor extends React.Component<EditorProps, EditorState> {
       this.lastMousedownTarget = e.target as HTMLElement;
     });
 
-    graph.on(GraphCommonEvent.onKeyDown, (e: any) => {
+    graph.on(GraphCommonEvent.onKeyDown, (e: KeyboardEvent) => {
       if (!this.shouldTriggerShortcut(graph, this.lastMousedownTarget)) {
         return;
       }
@@ -107,16 +110,22 @@ class Editor extends React.Component<EditorProps, EditorState> {
             return shortcut === code;
           }
 
-          return shortcut.every((item: string, index: number) => {
-            if (index === shortcut.length - 1) {
-              return item === code;
-            }
+          if (shortcut.length === 1 && shortcut[0] === code) {
+            return true;
+          }
 
-            return e[item];
-          });
+          const downKeys = SPECIAL_KEYS.filter(keyName => e[keyName]);
+          return (
+            downKeys.length === shortcut.length - 1 &&
+            shortcut.slice(0, -1).every(keyName => downKeys.includes(keyName)) &&
+            shortcut[shortcut.length - 1] === code
+          );
         });
 
         if (flag) {
+          e.preventDefault();
+          e.stopPropagation();
+
           if (commandManager.canExecute(graph, name)) {
             e.preventDefault();
 

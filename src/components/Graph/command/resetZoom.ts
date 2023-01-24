@@ -10,10 +10,15 @@ const resetZoomCommand: BaseCommand = {
   },
 
   execute(graph: Graph) {
-    graph.emit(GraphCustomEvent.onHidePortalTriger, null);
+    graph.emit(GraphCustomEvent.onHidePortalTrigger, null);
 
     graph.zoomTo(1);
   },
+
+  shortcuts: [
+    ['metaKey', 'Digit0'],
+    ['ctrlKey', 'Digit0'],
+  ],
 };
 
 export default resetZoomCommand;

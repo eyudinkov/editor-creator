@@ -40,7 +40,7 @@ export const cloneEvent = (e: GraphEvent) => {
   return event;
 };
 
-export const isNaN = (input: any) => Number.isNaN(Number(input));
+export const isNaN = (input: unknown) => Number.isNaN(Number(input));
 
 export function guid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -472,7 +472,7 @@ export const getTransformTranslateValues = (transform: string | null) => {
   };
 };
 
-export function hashCodeObject(obj: { [key: string]: any }): number {
+export function hashCodeObject(obj: { [key: string]: unknown }): number {
   const str = JSON.stringify(obj);
   let hash = 0;
   for (let i = 0; i < str.length; i++) {

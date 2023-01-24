@@ -21,7 +21,7 @@ const zoomOutCommand: BaseCommand = {
       return;
     }
 
-    graph.emit(GraphCustomEvent.onHidePortalTriger, null);
+    graph.emit(GraphCustomEvent.onHidePortalTrigger, null);
 
     const container = graph.get('container');
     const { clientWidth = 0, clientHeight = 0 } = container;

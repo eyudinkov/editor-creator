@@ -57,6 +57,11 @@ const hideEdges: BaseCommand<HideEdgesParams> = {
       graph.emit(GraphCustomEvent.onAfterVisibilityChangeAllEdges, null);
     });
   },
+
+  shortcuts: [
+    ['metaKey', 'KeyH'],
+    ['ctrlKey', 'KeyH'],
+  ],
 };
 
 export default hideEdges;

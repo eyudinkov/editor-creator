@@ -15,7 +15,7 @@ interface ViewPortEventParam {
 }
 
 const GRID =
-  'url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj4NCiAgPGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWFlYWVhIiBzdHJva2Utd2lkdGg9IjEiPg0KICAgIDxyZWN0IHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgc3Ryb2tlPSJub25lIi8+DQogICAgPHJlY3QgeD0iMC41IiB5PSIwLjUiIHdpZHRoPSI0OS41IiBoZWlnaHQ9IjQ5LjUiIGZpbGw9Im5vbmUiLz4NCiAgPC9nPg0KPC9zdmc+DQo=)';
+  'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2UwZTBlMCIgb3BhY2l0eT0iMC4yIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=)';
 
 class Grid extends Base {
   public getDefaultCfgs(): GridConfig {
@@ -26,62 +26,59 @@ class Grid extends Base {
 
   init() {
     const graph = this.get('graph');
-    const minZoom = graph.get('minZoom');
     const graphContainer = graph.get('container');
     const canvas = graph.get('canvas').get('el');
-    const width = graph.get('width');
-    const height = graph.get('height');
+    let img = this.get('img') || GRID;
+    if (!img.includes('url(')) {
+      img = `url("${img}")`;
+    }
     const container = createDom(
-      `<div class='g6-grid-container' style="position: absolute; left:0;top:0;right:0;bottom:0;overflow: hidden;z-index: -1;"></div>`,
+      `<div class='g6-grid-container' style="position:absolute;overflow:hidden;z-index: -1;"></div>`,
     );
     const gridContainer = createDom(
       `<div 
         class='g6-grid' 
         style='position:absolute;
-        transform-origin: 0% 0% 0px;
         background-image: ${GRID};
         user-select: none
       '></div>`,
     );
 
-    container.appendChild(gridContainer);
-
-    modifyCSS(container, {
-      width: `${width}px`,
-      height: `${height}px`,
-      left: `${graphContainer.offsetLeft}px`,
-      top: `${graphContainer.offsetTop}px`,
-    });
-    modifyCSS(gridContainer, {
-      width: `${width / minZoom}px`,
-      height: `${height / minZoom}px`,
-      left: `0px`,
-      top: `0px`,
-    });
-
-    graphContainer.insertBefore(container, canvas);
-
     this.set('container', container);
     this.set('gridContainer', gridContainer);
+
+    this.positionInit();
+
+    container.appendChild(gridContainer);
+    graphContainer.insertBefore(container, canvas);
+  }
+
+  positionInit() {
+    const graph = this.get('graph');
+    const minZoom = graph.get('minZoom');
+    const width = graph.get('width');
+    const height = graph.get('height');
+
+    modifyCSS(this.get('container'), {
+      width: `${width}px`,
+      height: `${height}px`,
+    });
+
+    const gridContainerWidth = (width * 80) / minZoom;
+    const gridContainerHeight = (height * 80) / minZoom;
+    modifyCSS(this.get('gridContainer'), {
+      width: `${gridContainerWidth}px`,
+      height: `${gridContainerHeight}px`,
+      left: `-${gridContainerWidth / 2}px`,
+      top: `-${gridContainerHeight / 2}px`,
+    });
   }
 
   getEvents() {
     return {
-      containersizechange: 'updateContainer',
+      containersizechange: 'positionInit',
       viewportchange: 'updateGrid',
     };
-  }
-
-  updateContainer() {
-    const graph = this.get('graph');
-    const width = graph.get('width');
-    const height = graph.get('height');
-    const container = this.get('container');
-
-    modifyCSS(container, {
-      width: `${width}px`,
-      height: `${height}px`,
-    });
   }
 
   updateGrid(e: ViewPortEventParam) {
@@ -89,7 +86,7 @@ class Grid extends Base {
     let { matrix } = e;
     if (!matrix) matrix = [1, 0, 0, 0, 1, 0, 0, 0, 1];
 
-    const transform = `matrix(${matrix[0]}, ${matrix[1]}, ${matrix[3]}, ${matrix[4]}, 0, 0)`;
+    const transform = `matrix(${matrix[0]}, ${matrix[1]}, ${matrix[3]}, ${matrix[4]}, ${matrix[6]}, ${matrix[7]})`;
 
     modifyCSS(gridContainer, {
       transform,

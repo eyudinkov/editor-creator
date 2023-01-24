@@ -29,7 +29,7 @@ const undoCommand: Command = {
     const commandManager: CommandManager = graph.get('commandManager');
     const { commandQueue, commandIndex } = commandManager;
 
-    graph.emit(GraphCustomEvent.onHidePortalTriger, null);
+    graph.emit(GraphCustomEvent.onHidePortalTrigger, null);
 
     commandQueue[commandIndex - 1].undo(graph);
 

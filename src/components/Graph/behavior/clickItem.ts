@@ -22,7 +22,7 @@ const clickItemBehavior: ClickItemBehavior & ThisType<ClickItemBehavior & Defaul
     return {
       multiple: true,
       keydown: false,
-      keyCode: 17,
+      keyCode: 16,
     };
   },
 
@@ -48,7 +48,7 @@ const clickItemBehavior: ClickItemBehavior & ThisType<ClickItemBehavior & Defaul
 
     if (this.multiple && this.keydown) {
       graph.setItemState(item, ItemState.Selected, !isSelected);
-      graph.emit(GraphCustomEvent.onHidePortalTriger, null);
+      graph.emit(GraphCustomEvent.onHidePortalTrigger, null);
     } else {
       clearSelectedState(graph, selectedItem => {
         return selectedItem !== item;

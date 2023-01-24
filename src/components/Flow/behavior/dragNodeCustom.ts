@@ -18,7 +18,6 @@ interface Origin {
 }
 
 interface DragNodeBehavior extends Behavior {
-  targets: any[];
   target: Item | null;
   origin: Origin | null;
   point: {
@@ -56,7 +55,7 @@ interface DragNodeBehavior extends Behavior {
 interface DefaultConfig {
   updateEdge: boolean;
   delegateStyle: {
-    [key: string]: any;
+    [key: string]: unknown;
   };
   enableDelegate: boolean;
 }
@@ -88,7 +87,7 @@ const dragNode: DragNodeBehavior & ThisType<DragNodeBehavior & DefaultConfig> = 
   },
 
   onDragStart(e: GraphEvent) {
-    if (!this.shouldBegin.call(this, e)) {
+    if (this.graph.get('dragCanvas') || !this.shouldBegin.call(this, e)) {
       return;
     }
 
@@ -157,7 +156,7 @@ const dragNode: DragNodeBehavior & ThisType<DragNodeBehavior & DefaultConfig> = 
       if (this.enableDelegate) {
         this._updateDelegate(e);
       } else {
-        this.targets.forEach(target => {
+        this.targets.forEach((target: Item) => {
           this._update(target, e, this.enableDelegate);
         });
       }
@@ -192,7 +191,7 @@ const dragNode: DragNodeBehavior & ThisType<DragNodeBehavior & DefaultConfig> = 
     }
 
     if (this.targets.length > 0) {
-      this.targets.forEach(node => this._update(node, e));
+      this.targets.forEach((node: Item) => this._update(node, e));
     } else if (this.target) {
       this._update(this.target, e);
     }
@@ -217,7 +216,7 @@ const dragNode: DragNodeBehavior & ThisType<DragNodeBehavior & DefaultConfig> = 
     const self = this;
     if (this.origin) {
       const canvasElement = self.graph.get('canvas').get('el');
-      const fn = event => {
+      const fn = (event: Event) => {
         if (event.target !== canvasElement) {
           self.onDragEnd(e);
         }

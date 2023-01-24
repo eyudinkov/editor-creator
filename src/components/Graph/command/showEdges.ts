@@ -58,6 +58,11 @@ const showEdges: BaseCommand<ShowEdgesParams> = {
       graph.emit(GraphCustomEvent.onAfterVisibilityChangeAllEdges, null);
     });
   },
+
+  shortcuts: [
+    ['metaKey', 'shiftKey', 'KeyH'],
+    ['ctrlKey', 'shiftKey', 'KeyH'],
+  ],
 };
 
 export default showEdges;

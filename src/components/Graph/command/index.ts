@@ -15,7 +15,7 @@ import duplicate from './duplicate';
 import resetZoom from './resetZoom';
 import hideEdges from './hideEdges';
 import showEdges from './showEdges';
-import changeEdgeControll from './changeEdgeControll';
+import ChangeEdgeControl from './changeEdgeControl';
 
 export default {
   redo,
@@ -35,5 +35,5 @@ export default {
   resetZoom,
   hideEdges,
   showEdges,
-  changeEdgeControll,
+  ChangeEdgeControl,
 };
