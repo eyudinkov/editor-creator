@@ -15,7 +15,7 @@
     "flow",
     "@antv/g6"
   ],
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "A graph visualization engine, which provides a bunch of predefined blocks and layouts and based on G6 and React",
   "main": "lib/index.js",
   "unpkg": "dist/index.js",
