@@ -2,6 +2,9 @@
 
 ***
 
+[![npm](https://img.shields.io/npm/v/editor-creator)](https://www.npmjs.com/package/editor-creator)
+[![npm](https://img.shields.io/npm/dm/editor-creator)](https://www.npmjs.com/package/editor-creator)
+
 Editor-Creator is a graph visualization engine, which provides a bunch of predefined blocks and layouts and based on G6 and React.
 
 ![Cover](https://raw.githubusercontent.com/eyudinkov/editor-creator/main/images/cover.png)
