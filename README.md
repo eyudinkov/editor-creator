@@ -123,7 +123,6 @@ For `EditorPrivateContextProps`:
 | `initGraph`                 | Required. Function that initializes and returns the graph.                                                                                                           |
 | `setRef`                    | Required. Function that receives a ref to the container `div`. This ref can be used to manipulate the DOM node directly.                                             |
 | `GraphReactEventProps`      | Optional. Props corresponding to graph events. If a function is passed for any of these props, it will be called when the corresponding event is fired on the graph. |
-| `EditorPrivateContextProps` | Required. Props from the `EditorPrivateContext`. These are used for command execution and setting the graph in the context.                                          |
 
 ### Command
 
@@ -141,8 +140,6 @@ For `EditorPrivateContextProps`:
 | `className` | Optional. CSS class name for the component.                       |
 
 ### Item
-
-Sure, here's a Markdown table summarizing the available props for the `Item` component:
 
 | Prop        | Description                                                                                                                      |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
